@@ -19,7 +19,7 @@ class UserMediator(
     private val query: String
 ) : RemoteMediator<Int, User>() {
 
-    val userDao = database.getUserDao()
+    private val userDao = database.getUserDao()
 
     override suspend fun load(loadType: LoadType, state: PagingState<Int, User>): MediatorResult {
 
@@ -41,8 +41,8 @@ class UserMediator(
                 }
             }
 
-            // 从网络获取到数据
-            val response = networkService.getData(
+            // 从网络获取应答
+            val response = networkService.getDataByItem(
                 query = query,
                 after = loadKey,
                 limit = when (loadType) {
@@ -63,7 +63,7 @@ class UserMediator(
 
             // 根据后台给出的数据判断是否还有后续数据
             MediatorResult.Success(
-                endOfPaginationReached = response.nextKey == null
+                endOfPaginationReached = response.isFinal
             )
 
         } catch (e: IOException) {

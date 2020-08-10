@@ -7,9 +7,9 @@ import retrofit2.http.Query
 
 class NetworkService {
 
-    private val response = Response(listOf(User("1","Name")), 10)
+    private val response = Response(listOf(User("1","Name")), false)
 
-    suspend fun getData(
+    suspend fun getDataByItem(
         query: String,
         before: String? = null,
         after: String? = null,
@@ -18,7 +18,15 @@ class NetworkService {
         return response
     }
 
+    suspend fun getDataByPage(
+        query: String,
+        page: Int?,
+        limit: Int
+    ): Response {
+        return response
+    }
 
-    data class Response(val data: List<User>, val nextKey: Int)
+
+    data class Response(val data: List<User>, val isFinal: Boolean)
 
 }
